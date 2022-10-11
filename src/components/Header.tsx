@@ -1,10 +1,8 @@
-import CoverImage from "../images/mydesk.png";
+import CoverImage from "../images/my_desk.png";
 import ProfileImage from "../images/profile-image.png";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 
 export const Header = () => {
-  const componentName = () => "Header";
-
   return (
     <header
       className="main-cover"
