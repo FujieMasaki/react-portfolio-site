@@ -15,25 +15,22 @@ type Language = {
 };
 
 export const Skills = () => {
-  const [languageList, setLanguageList] = useState([]);
+  const [languageList, setLanguageList] = useState<Language[]>([]);
   console.log(languageList);
   useEffect(() => {
     axios
-      .get("https://api.github.com/users/FujieMasaki/repos")
+      .get<Language[]>("https://api.github.com/users/FujieMasaki/repos")
       .then((response) => {
-        const languageList = response.data.map(
-          (res: { language: string }) => res.language
-        );
+        const languageList = response.data.map((res) => res.language);
         // ['JavaScript', 'JavaScript', 'Ruby', null]な、かたちで返される
-        const countedLanguageList =
-          generateLanguageCountObj(languageList);
+        const countedLanguageList = generateLanguageCountObj(languageList:string);
         setLanguageList(countedLanguageList);
       });
   }, []);
 
-  const generateLanguageCountObj = (allLanguageList) => {
+  const generateLanguageCountObj = (allLanguageList: string) => {
     const notNullLanguageList = allLanguageList.filter(
-      (language) => language != null
+      (language: string) => language != null
     );
     const uniqueLanguageList = [...new Set(notNullLanguageList)];
 
