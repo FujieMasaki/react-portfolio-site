@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-type dataType = {
-  name?: string;
-  full_name: string;
-};
-
 type Language = {
   language: string;
   count?: number;
