@@ -2,15 +2,16 @@ import React from "react";
 import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 import { count } from "console";
+import { stringify } from "querystring";
 
 type dataType = {
-  name: string;
+  name?: string;
   full_name: string;
 };
 
 type Language = {
   language: string;
-  count: number;
+  count?: number;
   private?: boolean;
 };
 
@@ -23,12 +24,13 @@ export const Skills = () => {
       .then((response) => {
         const languageList = response.data.map((res) => res.language);
         // ['JavaScript', 'JavaScript', 'Ruby', null]な、かたちで返される
-        const countedLanguageList = generateLanguageCountObj(languageList:string);
+        console.log(languageList);
+        const countedLanguageList = generateLanguageCountObj(languageList);
         setLanguageList(countedLanguageList);
       });
   }, []);
 
-  const generateLanguageCountObj = (allLanguageList: string) => {
+  const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
       (language: string) => language != null
     );
