@@ -1,8 +1,5 @@
-import React from "react";
 import { useEffect, useState } from "react";
-import axios, { Axios } from "axios";
-import { count } from "console";
-import { stringify } from "querystring";
+import axios from "axios";
 
 type dataType = {
   name?: string;
