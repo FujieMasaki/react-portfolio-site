@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
+import {
+  skillReducer,
+  initialState,
+  actionTypes,
+} from "../reducers/skillReducer";
 
 type Language = {
   language: string;
@@ -7,18 +12,26 @@ type Language = {
   private?: boolean;
 };
 
+type actionTypes = {
+  initial: string;
+  fetch: string;
+  success: string;
+  error: string;
+};
 export const Skills = () => {
-  const [languageList, setLanguageList] = useState<Language[]>([]);
-  console.log(languageList);
+  const [state, dispatch] = useReducer<actionTypes>[](skillReducer, initialState);
   useEffect(() => {
+    dispatch({type:actionTypes:fetch})
     axios
       .get<Language[]>("https://api.github.com/users/FujieMasaki/repos")
       .then((response) => {
         const languageList = response.data.map((res) => res.language);
         // ['JavaScript', 'JavaScript', 'Ruby', null]な、かたちで返される
-        console.log(languageList);
         const countedLanguageList = generateLanguageCountObj(languageList);
-        setLanguageList(countedLanguageList);
+        dispatch({ type: actionTypes.success, payload: { languageList: countedLanguageList } });
+      })
+      .catch(() => {
+        dispatch({ type: actionTypes.error });
       });
   }, []);
 
