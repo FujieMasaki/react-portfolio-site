@@ -1,4 +1,4 @@
-import { requestState } from "../constants";
+import { requestStates } from "../constants";
 
 //reducerに渡す、また内部で参照する文字列
 export const actionTypes = {
@@ -31,13 +31,13 @@ export const skillReducer = (state, action) => {
     case actionTypes.success: {
       return {
         languageList: action.payload.languageList,
-        requestState: requestState.success,
+        requestState: requestStates.success,
       };
     }
     case actionTypes.error: {
       return {
         languageList: [],
-        requestState: requestState.error,
+        requestState: requestStates.error,
       };
     }
     default: {
