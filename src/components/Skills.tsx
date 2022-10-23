@@ -7,6 +7,7 @@ import {
 } from "../reducers/skillReducer";
 import { requestStates } from "../constants";
 import Circle from "react-circle";
+import { stringify } from "querystring";
 
 type Language = {
   language: string;
@@ -14,17 +15,13 @@ type Language = {
   private?: boolean;
 };
 
-type Dispatch = () => string;
-
-// type actionTypes = {
-//   initial: string;
-//   fetch: string;
-//   success: string;
-//   error: string;
-// };
+type dispatch = {
+  type: string;
+};
 
 export const Skills = () => {
   // stateはlanguageListとrequestStateを初期化している
+  // dispatchはaction
   // initialStateは初期ステート
   const [state, dispatch] = useReducer(skillReducer, initialState);
   console.log(state);
@@ -60,12 +57,17 @@ export const Skills = () => {
     });
   };
 
-  const converseCountToPercentage = (count) => {
+  const converseCountToPercentage = (count: number) => {
     if (count > 10) {
       return 10;
     }
     return count * 10;
   };
+
+  const sortedLanguageList = () =>
+    state.languageList.sort(
+      (firstLang, nextLang) => nextLang.count - firstLang.count
+    );
 
   return (
     <div id="skills">
@@ -75,14 +77,14 @@ export const Skills = () => {
         </div>
         <div className="skills-container">
           {
-            (state.requestState = state.requestState.loading && (
+            (state.requestState = requestStates.loading && (
               <p className="description">取得中</p>
             ))
           }
           {
             (state.requestState =
               state.requestState.success &&
-              state.languageList.map((item, index) => (
+              sortedLanguageList.map((item, index) => (
                 <div key={index}>
                   <p className="description">
                     <strong>{item.language}</strong>
@@ -95,7 +97,7 @@ export const Skills = () => {
               )))
           }
           {
-            (state.requestState = state.requestState.error && (
+            (state.requestState = requestStates.error && (
               <p className="description">エラーが発生しました</p>
             ))
           }

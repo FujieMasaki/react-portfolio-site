@@ -1,5 +1,15 @@
 import { requestStates } from "../constants";
 
+type Action = {
+  type: string;
+};
+
+type actionTypes = {
+  initial: string;
+  fetch: string;
+  success: string;
+  error: string;
+};
 //reducerに渡す、また内部で参照する文字列
 export const actionTypes = {
   initial: "INITIAL",
@@ -14,7 +24,7 @@ export const initialState = {
   requestState: requestStates.idle,
 };
 
-export const skillReducer = (state, action) => {
+export const skillReducer = (state: string, action: Action) => {
   switch (action.type) {
     case actionTypes.initial: {
       return {
