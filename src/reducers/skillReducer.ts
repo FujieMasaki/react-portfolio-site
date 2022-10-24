@@ -1,6 +1,7 @@
 import { requestStates } from "../constants";
 
 type Action = {
+  payload: string[];
   type: string;
 };
 
