@@ -7,24 +7,24 @@ import {
 } from "../reducers/skillReducer";
 import { requestStates } from "../constants";
 import Circle from "react-circle";
-import { stringify } from "querystring";
 
 type Language = {
-  language: string;
-  count?: number;
-  private?: boolean;
+  state: string[];
+  dispatch?: string;
 };
 
-type dispatch = {
-  type: string;
+type LanguageList = {
+  count?: number;
+  language?: string;
 };
+
 
 export const Skills = () => {
   // stateはlanguageListとrequestStateを初期化している
   // dispatchはaction
   // initialStateは初期ステート
   const [state, dispatch] = useReducer(skillReducer, initialState);
-  console.log(state);
+
   useEffect(() => {
     dispatch({ type: actionTypes.fetch });
     axios
@@ -33,6 +33,7 @@ export const Skills = () => {
         const languageList = response.data.map((res) => res.language);
         // ['JavaScript', 'JavaScript', 'Ruby', null]な、かたちで返される
         const countedLanguageList = generateLanguageCountObj(languageList);
+        console.log(countedLanguageList);
         dispatch({
           type: actionTypes.success,
           payload: { languageList: countedLanguageList },

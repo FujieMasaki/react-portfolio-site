@@ -3,6 +3,7 @@ type DisplayStates = {
   loading: string;
   success: string;
   error: string;
+  initial?: string;
 };
 
 export const requestStates: DisplayStates = {
