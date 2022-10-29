@@ -15,7 +15,7 @@ export type Action = {
 };
 
 type LanguageList = {
-  languageList: string;
+  languageList: string[];
 };
 
 export type actionTypes = {
