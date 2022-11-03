@@ -14,7 +14,7 @@ type LanguageList = {
   languageList?: LanguageState[];
 };
 
-type LanguageState = {
+export type LanguageState = {
   language: string;
   count: number;
 };
