@@ -42,25 +42,25 @@ export const initialState = {
 
 export const skillReducer = (state: LanguageList, action: Action) => {
   switch (action.type) {
-    case actionTypes.initial: {
+    case "actionTypes.initial": {
       return {
         languageList: [],
         requestState: requestStates.initial,
       };
     }
-    case actionTypes.fetch: {
+    case "actionTypes.fetch": {
       return {
         ...state,
         requestState: requestStates.loading,
       };
     }
-    case actionTypes.success: {
+    case "actionTypes.success": {
       return {
         languageList: action.payload?.languageList,
         requestState: requestStates.success,
       };
     }
-    case actionTypes.error: {
+    case "actionTypes.error": {
       return {
         languageList: [],
         requestState: requestStates.error,
