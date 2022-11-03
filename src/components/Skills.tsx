@@ -83,7 +83,7 @@ export const Skills = () => {
               </div>
             ))}
           {state.requestState === requestStates.error && (
-            <p className="description">エラーが発生しました</p>
+            <p className="description">エラーが発生しました！</p>
           )}
         </div>
       </div>
