@@ -1,31 +1,33 @@
 import { requestStates } from "../constants";
 
-type State = {
-  LanguageList: string[];
-};
-
 export type Action = {
   type:
     | "actionTypes.initial"
     | "actionTypes.fetch"
     | "actionTypes.success"
+    | "actionTypes.error"
     | "languageList";
-  action: string;
-  payload: LanguageList;
+  payload?: LanguageList;
 };
 
 type LanguageList = {
-  languageList: string[];
+  languageList?: LanguageState[];
 };
 
-export type actionTypes = {
+type LanguageState = {
+  language: string;
+  count: number;
+};
+
+export type ActionTypes = {
   initial: string;
   fetch: string;
   success: string;
   error: string;
 };
+
 //reducerに渡す、また内部で参照する文字列
-export const actionTypes: actionTypes = {
+export const actionTypes: ActionTypes = {
   initial: "INITIAL",
   fetch: "FETCHING",
   success: "FETCH_SUCCESS",
@@ -38,7 +40,7 @@ export const initialState = {
   requestState: requestStates.idle,
 };
 
-export const skillReducer = (state: State, action: Action) => {
+export const skillReducer = (state: LanguageList, action: Action) => {
   switch (action.type) {
     case actionTypes.initial: {
       return {
@@ -54,7 +56,7 @@ export const skillReducer = (state: State, action: Action) => {
     }
     case actionTypes.success: {
       return {
-        languageList: action.payload.languageList,
+        languageList: action.payload?.languageList,
         requestState: requestStates.success,
       };
     }
@@ -66,6 +68,7 @@ export const skillReducer = (state: State, action: Action) => {
     }
     default: {
       throw new Error();
+      // 予期せぬaction.typeが渡された場合
     }
   }
 };
