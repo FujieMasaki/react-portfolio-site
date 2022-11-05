@@ -10,7 +10,7 @@ export type Action = {
   payload?: LanguageList;
 };
 
-type LanguageList = {
+export type LanguageList = {
   languageList?: LanguageState[];
 };
 

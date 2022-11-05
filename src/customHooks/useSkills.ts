@@ -1,9 +1,15 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, VFC } from "react";
 import axios from "axios";
 
-import { skillReducer, initialState } from "../reducers/skillReducer";
+import {
+  skillReducer,
+  initialState,
 
-import type {LanguageState} from "../reducers/skillReducer"
+  Action,
+  LanguageState,
+} from "../reducers/skillReducer";
+
+import { LanguageList } from "../reducers/skillReducer";
 
 type Language = {
   state: string[];
@@ -30,11 +36,11 @@ export const useSkills = () => {
           payload: { languageList: countedLanguageList },
         });
       })
+
       .catch(() => {
         dispatch({ type: "actionTypes.error" });
       });
   }, []);
-
   const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
       (language: string) => language != null
@@ -48,16 +54,19 @@ export const useSkills = () => {
       };
     });
   };
-  const converseCountToPercentage = (count: number) => {
+  const converseCountToPercentage = (count: number): number => {
     if (count > 10) {
       return 10;
     }
     return count * 10;
   };
+
   const sortedLanguageList = () =>
     state.languageList?.sort(
       (firstLang, nextLang) => nextLang.count - firstLang.count
     );
+  // countが多い、降順にならべられる。
+  // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
 
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
 };
