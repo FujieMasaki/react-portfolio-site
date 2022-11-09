@@ -4,10 +4,11 @@ import axios from "axios";
 import {
   skillReducer,
   initialState,
-
   Action,
   LanguageState,
 } from "../reducers/skillReducer";
+
+import { requestStates } from "../constants";
 
 import { LanguageList } from "../reducers/skillReducer";
 
@@ -17,14 +18,16 @@ type Language = {
   language: string;
 };
 
+const DEFAULT_MAX_PERCENTAGE = 100;
+const LANGUAGE_COUNT_BASE = 10;
+
 export const useSkills = () => {
   // stateはlanguageListとrequestStateを初期化している
   // dispatchはaction
   // initialStateは初期ステート
   const [state, dispatch] = useReducer(skillReducer, initialState);
 
-  useEffect(() => {
-    dispatch({ type: "actionTypes.fetch" });
+  const fetchApi = () => {
     axios
       .get<Language[]>("https://api.github.com/users/FujieMasaki/repos")
       .then((response) => {
@@ -40,6 +43,17 @@ export const useSkills = () => {
       .catch(() => {
         dispatch({ type: "actionTypes.error" });
       });
+  };
+
+  useEffect(() => {
+    if (state.requestState !== requestStates.loading)
+      return () => {
+        fetchApi();
+      };
+  }, [state.requestState]);
+
+  useEffect(() => {
+    dispatch({ type: "actionTypes.fetch" });
   }, []);
   const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
@@ -54,19 +68,21 @@ export const useSkills = () => {
       };
     });
   };
-  const converseCountToPercentage = (count: number): number => {
-    if (count > 10) {
-      return 10;
+  const converseCountToPercentage = (languageCount: number): number => {
+    if (languageCount > LANGUAGE_COUNT_BASE) {
+      return DEFAULT_MAX_PERCENTAGE;
     }
-    return count * 10;
+    return languageCount * LANGUAGE_COUNT_BASE;
   };
 
   const sortedLanguageList = () =>
     state.languageList?.sort(
       (firstLang, nextLang) => nextLang.count - firstLang.count
     );
-  // countが多い、降順にならべられる。
   // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
+  // countが多い、降順にならべられる。
+
+  console.log(sortedLanguageList);
 
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
 };
