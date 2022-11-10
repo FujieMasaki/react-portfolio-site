@@ -21,7 +21,7 @@ type Language = {
 const DEFAULT_MAX_PERCENTAGE = 100;
 const LANGUAGE_COUNT_BASE = 10;
 
-export const useSkills = () => {
+export const useSkills = ():[number * LANGUAGE_COUNT_BASE]=> {
   // stateはlanguageListとrequestStateを初期化している
   // dispatchはaction
   // initialStateは初期ステート
@@ -82,7 +82,7 @@ export const useSkills = () => {
   // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
   // countが多い、降順にならべられる。
 
-  console.log(sortedLanguageList);
+  console.log(converseCountToPercentage);
 
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
 };

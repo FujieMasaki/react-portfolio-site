@@ -11,17 +11,18 @@ export const Skills = () => {
         <div className="heading">
           <h2>Skills</h2>
         </div>
-        
+
         <div className="skills-container">
           {fetchRequestState === requestStates.loading && (
             <p className="description">取得中</p>
           )}
           {fetchRequestState === requestStates.success &&
-            sortedLanguageList()?.map((item, index) => (
+            sortedLanguageList().map((item, index) => (
               <div className="skill-item" key={index}>
                 <p className="description">
                   <strong>{item.language}</strong>
                 </p>
+                {console.log(sortedLanguageList.item)}
                 <Circle
                   animate
                   progress={converseCountToPercentage(item.count)}
