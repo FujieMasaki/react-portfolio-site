@@ -1,16 +1,11 @@
-import { useEffect, useReducer, VFC } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-import {
-  skillReducer,
-  initialState,
-  Action,
-  LanguageState,
-} from "../reducers/skillReducer";
+import { skillReducer, initialState } from "../reducers/skillReducer";
 
 import { requestStates } from "../constants";
 
-import { LanguageList } from "../reducers/skillReducer";
+import { LanguageState } from "../reducers/skillReducer";
 
 type Language = {
   state: string[];
@@ -18,10 +13,16 @@ type Language = {
   language: string;
 };
 
+export type UseSkills = [
+  sortedLanguageList: () => LanguageState[] | undefined,
+  fetchRequestState: string | undefined,
+  converseCountToPercentage: (languageCount: number) => number
+];
+
 const DEFAULT_MAX_PERCENTAGE = 100;
 const LANGUAGE_COUNT_BASE = 10;
 
-export const useSkills = ():[number * LANGUAGE_COUNT_BASE]=> {
+export function useSkills(): UseSkills {
   // stateはlanguageListとrequestStateを初期化している
   // dispatchはaction
   // initialStateは初期ステート
@@ -39,7 +40,6 @@ export const useSkills = ():[number * LANGUAGE_COUNT_BASE]=> {
           payload: { languageList: countedLanguageList },
         });
       })
-
       .catch(() => {
         dispatch({ type: "actionTypes.error" });
       });
@@ -55,6 +55,7 @@ export const useSkills = ():[number * LANGUAGE_COUNT_BASE]=> {
   useEffect(() => {
     dispatch({ type: "actionTypes.fetch" });
   }, []);
+
   const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
       (language: string) => language != null
@@ -68,21 +69,18 @@ export const useSkills = ():[number * LANGUAGE_COUNT_BASE]=> {
       };
     });
   };
+
   const converseCountToPercentage = (languageCount: number): number => {
     if (languageCount > LANGUAGE_COUNT_BASE) {
       return DEFAULT_MAX_PERCENTAGE;
     }
     return languageCount * LANGUAGE_COUNT_BASE;
   };
-
   const sortedLanguageList = () =>
     state.languageList?.sort(
       (firstLang, nextLang) => nextLang.count - firstLang.count
     );
   // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
   // countが多い、降順にならべられる。
-
-  console.log(converseCountToPercentage);
-
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
-};
+}
