@@ -2,9 +2,14 @@ import { requestStates } from "../constants";
 import Circle from "react-circle";
 import { useSkills } from "../customHooks/useSkills";
 
+import { UseSkills } from "../customHooks/useSkills";
+
 export const Skills = () => {
-  const [sortedLanguageList, fetchRequestState, converseCountToPercentage] =
-    useSkills();
+  const [
+    sortedLanguageList,
+    fetchRequestState,
+    converseCountToPercentage,
+  ]: UseSkills = useSkills();
   return (
     <div id="skills">
       <div className="container">
@@ -17,12 +22,11 @@ export const Skills = () => {
             <p className="description">取得中</p>
           )}
           {fetchRequestState === requestStates.success &&
-            sortedLanguageList().map((item, index) => (
+            sortedLanguageList()?.map((item, index) => (
               <div className="skill-item" key={index}>
                 <p className="description">
                   <strong>{item.language}</strong>
                 </p>
-                {console.log(sortedLanguageList.item)}
                 <Circle
                   animate
                   progress={converseCountToPercentage(item.count)}
