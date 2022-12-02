@@ -2,14 +2,9 @@ import { requestStates } from "../constants";
 import Circle from "react-circle";
 import { useSkills } from "../customHooks/useSkills";
 
-import { UseSkills } from "../customHooks/useSkills";
-
 export const Skills = () => {
-  const [
-    sortedLanguageList,
-    fetchRequestState,
-    converseCountToPercentage,
-  ]: UseSkills = useSkills();
+  const [sortedLanguageList, fetchRequestState, converseCountToPercentage] =
+    useSkills();
   return (
     <div id="skills">
       <div className="container">
