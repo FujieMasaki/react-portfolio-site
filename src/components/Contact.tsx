@@ -6,7 +6,9 @@ export const Contact = () => {
       <div className="container">
         <div className="contact-contents">
           <h2>Contact to Me!</h2>
-          <p>お仕事のご相談・ご依頼など下記よりご連絡ください。</p>
+          <p>
+            お仕事のご相談・ご依頼など下記よりご連絡をよろしくお願いいたします。
+          </p>
           <a href="https://twitter.com/Maski23421424" className="btn">
             Contact Me
           </a>
