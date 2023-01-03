@@ -31,7 +31,6 @@ export const Skills = () => {
 
           {fetchRequestState === requestStates.error && (
             <p className="description">エラーが発生しました！</p>
-
           )}
         </div>
       </div>
