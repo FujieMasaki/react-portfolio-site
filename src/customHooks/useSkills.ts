@@ -16,10 +16,11 @@ type Language = {
 export type UseSkills = [
   sortedLanguageList: () => LanguageState[] | undefined,
   fetchRequestState: string | undefined,
-  converseCountToPercentage: (languageCount: number) => number
+  converseCountToPercentage: (
+    languageCount: number,
+    uniqueLanguageList: string[]
+  ) => number
 ];
-
-const DEFAULT_MAX_PERCENTAGE = 100;
 const LANGUAGE_COUNT_BASE = 10;
 
 export function useSkills(): UseSkills {
@@ -56,12 +57,14 @@ export function useSkills(): UseSkills {
     dispatch({ type: "actionTypes.fetch" });
   }, []);
 
+  // const notNullLanguageList = (allLanguageList: string[]) => {
+  //   allLanguageList.filter((language: string) => language != null);
+  // };
   const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
       (language: string) => language != null
     );
     const uniqueLanguageList = [...new Set(notNullLanguageList)];
-
     return uniqueLanguageList.map((item) => {
       return {
         language: item,
@@ -70,12 +73,21 @@ export function useSkills(): UseSkills {
     });
   };
 
+  // const converseCountToPercentage = (languageCount: number): number => {
+  //   if (languageCount > LANGUAGE_COUNT_BASE) {
+  //     return DEFAULT_MAX_PERCENTAGE;
+  //   }
+  //   return languageCount * LANGUAGE_COUNT_BASE;
+  // };
+
   const converseCountToPercentage = (languageCount: number): number => {
-    if (languageCount > LANGUAGE_COUNT_BASE) {
-      return DEFAULT_MAX_PERCENTAGE;
+    if (languageCount > 0) {
+      console.log((languageCount / notNullLanguageList.length) * 100);
+      return (languageCount / notNullLanguageList.length) * 100;
     }
-    return languageCount * LANGUAGE_COUNT_BASE;
+    return LANGUAGE_COUNT_BASE;
   };
+
   const sortedLanguageList = () =>
     state.languageList?.sort(
       (firstLang, nextLang) => nextLang.count - firstLang.count
