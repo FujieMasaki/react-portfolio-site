@@ -11,6 +11,7 @@ export const Skills = () => {
         <div className="container">
           <div className="heading">
             <h2>Skills</h2>
+            <p>リポジトリに占める言語の割合</p>
           </div>
 
           <div className="skills-container">
