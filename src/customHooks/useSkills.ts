@@ -16,10 +16,7 @@ type Language = {
 export type UseSkills = [
   sortedLanguageList: () => LanguageState[] | undefined,
   fetchRequestState: string | undefined,
-  converseCountToPercentage: (
-    languageCount: number,
-    uniqueLanguageList: string[]
-  ) => number
+  converseCountToPercentage: (languageCount: number) => number
 ];
 const LANGUAGE_COUNT_BASE = 10;
 
@@ -57,14 +54,12 @@ export function useSkills(): UseSkills {
     dispatch({ type: "actionTypes.fetch" });
   }, []);
 
-  // const notNullLanguageList = (allLanguageList: string[]) => {
-  //   allLanguageList.filter((language: string) => language != null);
-  // };
   const generateLanguageCountObj = (allLanguageList: string[]) => {
     const notNullLanguageList = allLanguageList.filter(
       (language: string) => language != null
     );
     const uniqueLanguageList = [...new Set(notNullLanguageList)];
+    // 重複値をとりにぞいた新たな配列を生成する。['JavaScript', 'JavaScript', 'Ruby']を['JavaScript','Ruby']にする
     return uniqueLanguageList.map((item) => {
       return {
         language: item,
@@ -73,18 +68,15 @@ export function useSkills(): UseSkills {
     });
   };
 
-  // const converseCountToPercentage = (languageCount: number): number => {
-  //   if (languageCount > LANGUAGE_COUNT_BASE) {
-  //     return DEFAULT_MAX_PERCENTAGE;
-  //   }
-  //   return languageCount * LANGUAGE_COUNT_BASE;
+  // const notNullLanguageList = (allLanguageList: string[]) => {
+  //   allLanguageList.filter((language: string) => language != null);
   // };
 
   const converseCountToPercentage = (languageCount: number): number => {
     if (languageCount > 0) {
-      console.log((languageCount / notNullLanguageList.length) * 100);
-      return (languageCount / notNullLanguageList.length) * 100;
+      return Math.round((languageCount / 28) * 100);
     }
+
     return LANGUAGE_COUNT_BASE;
   };
 
@@ -94,5 +86,13 @@ export function useSkills(): UseSkills {
     );
   // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
   // countが多い、降順にならべられる。
+
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
 }
+
+// const converseCountToPercentage = (languageCount: number): number => {
+//   if (languageCount > LANGUAGE_COUNT_BASE) {
+//     return DEFAULT_MAX_PERCENTAGE;
+//   }
+//   return languageCount * LANGUAGE_COUNT_BASE;
+// };
