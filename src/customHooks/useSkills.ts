@@ -18,8 +18,6 @@ export type UseSkills = [
   fetchRequestState: string | undefined,
   converseCountToPercentage: (languageCount: number) => number
 ];
-
-const DEFAULT_MAX_PERCENTAGE = 100;
 const LANGUAGE_COUNT_BASE = 10;
 
 export function useSkills(): UseSkills {
@@ -61,7 +59,7 @@ export function useSkills(): UseSkills {
       (language: string) => language != null
     );
     const uniqueLanguageList = [...new Set(notNullLanguageList)];
-
+    // 重複値をとりにぞいた新たな配列を生成する。['JavaScript', 'JavaScript', 'Ruby']を['JavaScript','Ruby']にする
     return uniqueLanguageList.map((item) => {
       return {
         language: item,
@@ -70,17 +68,31 @@ export function useSkills(): UseSkills {
     });
   };
 
+  // const notNullLanguageList = (allLanguageList: string[]) => {
+  //   allLanguageList.filter((language: string) => language != null);
+  // };
+
   const converseCountToPercentage = (languageCount: number): number => {
-    if (languageCount > LANGUAGE_COUNT_BASE) {
-      return DEFAULT_MAX_PERCENTAGE;
+    if (languageCount > 0) {
+      return Math.round((languageCount / 28) * 100);
     }
-    return languageCount * LANGUAGE_COUNT_BASE;
+
+    return LANGUAGE_COUNT_BASE;
   };
+
   const sortedLanguageList = () =>
     state.languageList?.sort(
       (firstLang, nextLang) => nextLang.count - firstLang.count
     );
   // state.languageListには{language: 'TypeScript', count: 8},{language: 'Ruby', count: 5} が入ってくる
   // countが多い、降順にならべられる。
+
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
 }
+
+// const converseCountToPercentage = (languageCount: number): number => {
+//   if (languageCount > LANGUAGE_COUNT_BASE) {
+//     return DEFAULT_MAX_PERCENTAGE;
+//   }
+//   return languageCount * LANGUAGE_COUNT_BASE;
+// };
